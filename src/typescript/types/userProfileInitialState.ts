@@ -4,7 +4,9 @@ export type userProfileInitialState = {
     userProfileInfo: {
         isAuth: boolean,
         userData: userDataType,
-    }
+        userExpences: userExpencesType,
+        userIncome: number,
+    },
 }
 
 export type userDataType = {
@@ -12,4 +14,12 @@ export type userDataType = {
     lastName: string,
     email: string,
     uid: string,
+}
+
+export type userExpencesType = {
+    food: number,
+    home: number,
+    shopping: number,
+    car: number,
+    leisure: number,
 }

@@ -10,13 +10,18 @@ import { auth, db } from "../../../services/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { FIRESTORE_PATH_NAMES } from "../../../util/constants/firestorePathNames";
 import { doc, setDoc } from "firebase/firestore";
+import { AppDispatch } from "../../../state-management/store";
+import { COLORS } from "../../../util/constants/styles";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../typescript/interface/rootState";
 
 const { Title } = Typography;
 
 const Register = () => {
+    const { userIncome, userExpences } = useSelector((store: RootState) => store.userProfile.userProfileInfo);
     const [ form ] = Form.useForm();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
 
     const handleRegister = async ( values: registerValues ) => {
         const { firstName, lastName, email, password } = values;
@@ -27,7 +32,7 @@ const Register = () => {
             const { uid } = response.user;
             const createDoc = doc(db, FIRESTORE_PATH_NAMES.REGISTER_USERS, uid);
             await setDoc(createDoc, {
-                uid, firstName, lastName, email
+                uid, firstName, lastName, email, userExpences, userIncome
             })
             form.resetFields();
             navigate(ROUTE_PATHS.LOGIN);
@@ -36,12 +41,13 @@ const Register = () => {
                 message: 'Invalid Register Credentials'
             })
         }finally{
-            dispatch(setLoading(false))
+            dispatch(setLoading(false));
         }};
 
     return(
         <Wrapper>
-            <Title>Sign Up</Title>
+            <div className="formContainer">
+            <Title level={3} style={{color: COLORS.blue}}>Sign Up</Title>
             <Form form={form} layout="vertical" onFinish={handleRegister}>
             <Form.Item
             className="formItem"
@@ -97,6 +103,7 @@ const Register = () => {
             <Title style={{color: 'rgba(0, 60, 255, 0.64)'}} level={4}>Already have an account?</Title>
             <Link to={ROUTE_PATHS.LOGIN}>Sign in</Link>  
             </Form>
+            </div>
         </Wrapper>
     )
 }

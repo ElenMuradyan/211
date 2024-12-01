@@ -16,7 +16,15 @@ const initialState: userProfileInitialState = {
             lastName: '',
             email: '',
             uid: '',
-        }
+        },
+        userExpences: {
+            food: 0,
+            home: 0,
+            shopping: 0,
+            car: 0,
+            leisure: 0,
+        },
+        userIncome: 0
     }
 }
 
@@ -67,6 +75,14 @@ const userProfileSlice = createSlice({
                 state.userProfileInfo = {
                     isAuth: true,
                     userData: userProfile,
+                    userExpences: {
+                        food: 0,
+                        home: 0,
+                        shopping: 0,
+                        car: 0,
+                        leisure: 0,
+                    },
+                    userIncome: 0
                 }     
         }})
         .addCase(fetchUserProfileInfo.rejected, (state, action) => {
@@ -78,7 +94,16 @@ const userProfileSlice = createSlice({
                   lastName: '',
                   email: '',
                   uid: '',
-                }}
+                },
+                userExpences: {
+                    food: 0,
+                    home: 0,
+                    shopping: 0,
+                    car: 0,
+                    leisure: 0,
+                },
+                userIncome: 0
+            }
                 state.error = action.payload as string;
             })
     }   

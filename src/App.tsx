@@ -8,15 +8,18 @@ import { fetchUserProfileInfo } from './state-management/slices/userProfile';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import CabinetLayout from './layouts/CabinetLayout';
-import './App.css';
-
 import { RootState } from './typescript/interface/rootState';
+import { AppDispatch } from './state-management/store';
+
+import './App.css';
+import Mainpage from './pages/MainPage';
 
 function App() {
+  const dispatch = useDispatch<AppDispatch>();
   const { userProfileInfo: { isAuth } } = useSelector((store: RootState) => store.userProfile);
 
   useEffect(() => {
-    fetchUserProfileInfo();
+    dispatch(fetchUserProfileInfo());
   },[fetchUserProfileInfo]);
 
   return (
@@ -33,7 +36,7 @@ function App() {
                       {/*Cabinet */}
 
                 <Route path={ROUTE_PATHS.CABINET} element={isAuth ? <CabinetLayout /> : <Navigate to={ROUTE_PATHS.LOGIN} />}>
-                
+                <Route index element={<Mainpage/>}/>
                 </Route>
             </Route>
           )

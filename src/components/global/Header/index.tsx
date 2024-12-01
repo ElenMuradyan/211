@@ -1,4 +1,5 @@
 import { Flex, Typography, theme } from "antd";
+
 import './index.css';
 
 const { Title } = Typography;
@@ -8,7 +9,7 @@ const Header = () => {
 
     return(
         <Flex className='header_container' justify='space-between' style={{backgroundColor: token.blue}}>
-            <Title level={4} style={{padding: 0, margin: 0, color: 'white'}}>RESUME GENERATOR</Title>
+            <Title level={4} style={{padding: 0, margin: 0, color: 'white'}}>SPENDER</Title>
         </Flex>
     )
 };
