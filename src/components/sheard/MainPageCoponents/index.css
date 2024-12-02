@@ -1,0 +1,9 @@
+.wallet_component {
+    box-shadow: rgba(0, 60, 255, 0.64) 2.4px 2.4px 3.2px;
+    padding: 50px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+.wallet_component:hover{
+    background-color: aliceblue;
+}

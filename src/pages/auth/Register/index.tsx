@@ -18,7 +18,7 @@ import { RootState } from "../../../typescript/interface/rootState";
 const { Title } = Typography;
 
 const Register = () => {
-    const { userIncome, userExpences } = useSelector((store: RootState) => store.userProfile.userProfileInfo);
+    const { userIncome, userExpences } = useSelector((store: RootState) => store.userProfile.userProfileInfo.userData);
     const [ form ] = Form.useForm();
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();

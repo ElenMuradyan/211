@@ -1,5 +1,5 @@
-import { title } from "../types/titleProps"
+import { userExpencesType } from "../types/userProfileInitialState";
 
 export interface mainComponentProps {
-    title: title,
+    title: keyof userExpencesType,
 }

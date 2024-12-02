@@ -2,48 +2,79 @@ import { Modal, Form, Input, Select } from "antd"
 import { useState } from "react";
 import { selectOptions } from "../../../util/constants/selectOptions";
 import { createWalletEventProps } from "../../../typescript/types/createWalletEventProps";
-import { addDoc, collection, doc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
 import { FIRESTORE_PATH_NAMES } from "../../../util/constants/firestorePathNames";
 import { db } from "../../../services/firebase";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../typescript/interface/rootState";
 import { addEventProps } from "../../../typescript/interface/addEventProps";
+import { userExpencesType } from "../../../typescript/types/userProfileInitialState";
+import { useDispatch } from "react-redux";
+import { fetchUserProfileInfo } from "../../../state-management/slices/userProfile";
+import { fetchWalletEvents } from "../../../state-management/slices/walletEvents";
+import { AppDispatch } from "../../../state-management/store";
 
 const AddWalletEventModal = ({ title, isOpen, onClose }: addEventProps) => {
+    const dispatch = useDispatch<AppDispatch>();
     const uppercasedTitle = `${title[0].toUpperCase()}${title.slice(1)}`;
-    const { uid } = useSelector((store: RootState) => store.userProfile.userProfileInfo.userData);
+    const { uid, userExpences, userIncome } = useSelector((store: RootState) => store.userProfile.userProfileInfo.userData);
     const [ buttonLoading, setButtonLoading ] = useState<boolean>(false)
-    const [ selectValue, setSelectValue ] = useState<string>(selectOptions[0].value);
+    const [ selectValue, setSelectValue ] = useState<keyof userExpencesType>(selectOptions[0].value as keyof userExpencesType);
     const [ form ] = Form.useForm();
 
     const handleCreateWalletEvent = async (values: createWalletEventProps) => {
         setButtonLoading(true);
         const eventData = {
             type: title,
-            date: new Date().toLocaleTimeString(),
+            date: new Date().toLocaleString(),
             amount: values.amount,
             description: values.description,
-            category: title === 'expense' ? selectValue : undefined,
+            category: title === 'expense' ? selectValue : '',
         }
+
         try{
             const userRef = doc(db, FIRESTORE_PATH_NAMES.REGISTER_USERS, uid);
             const userWalletEventsRef = collection(userRef, FIRESTORE_PATH_NAMES.WALLET_EVENTS);
+            const userDoc = await getDoc(userRef);
+
             await addDoc(userWalletEventsRef, eventData);
+
+            if(title === 'expense' && selectValue){                
+                if(userDoc.exists()){
+                    await updateDoc(userRef, {
+                        userExpences:{
+                            ...userExpences,
+                            [`${selectValue}`]: Number(userExpences[selectValue]) + Number(values.amount)
+                        },
+                        userIncome: userIncome - Number(values.amount)
+                    })
+                }
+            }else if(title === 'income'){
+                if(userDoc.exists()){
+                    await updateDoc(userRef, {
+                        userIncome: userIncome + Number(values.amount)
+                    })
+                }
+            }
+            dispatch(fetchUserProfileInfo());
+            dispatch(fetchWalletEvents(uid));
             form.resetFields();
             setButtonLoading(false);
             onClose();
-        }catch{
+        }catch(e){
+            console.log(e);
+
             setButtonLoading(false);
         }
     }
 
     const handleClose = () => {
         onClose();
-        setSelectValue(selectOptions[0].value);
+        setSelectValue(selectOptions[0].value as keyof userExpencesType);
         form.resetFields();
     };
 
-    const handleSelectChange = (value: string) => {
+    const handleSelectChange = (value: keyof userExpencesType) => {
         setSelectValue(value)
     };
 
@@ -77,16 +108,12 @@ const AddWalletEventModal = ({ title, isOpen, onClose }: addEventProps) => {
                     message: 'Plaese Input The Description'
                 }]}
                 >
-                    <Input type='text' placeholder='Please Enter The Amount'/>
+                    <Input type='text' placeholder='Please Enter The Description'/>
                 </Form.Item>
                 {
                     title === 'expense' && <Form.Item
                     name='category'
                     label='Choose Field'
-                    rules={[{
-                        required: true,
-                        message: 'Plaese Select Expense Type'
-                    }]}
                     >
                         <Select
                         options={selectOptions}
