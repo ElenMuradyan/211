@@ -13,6 +13,7 @@ import { AppDispatch } from './state-management/store';
 
 import './App.css';
 import Mainpage from './pages/MainPage';
+import WalletEventsPage from './pages/WalletEventsPage';
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -37,6 +38,7 @@ function App() {
 
                 <Route path={ROUTE_PATHS.CABINET} element={isAuth ? <CabinetLayout /> : <Navigate to={ROUTE_PATHS.LOGIN} />}>
                 <Route index element={<Mainpage/>}/>
+                <Route path={`${ROUTE_PATHS.CABINET}:title`} element={<WalletEventsPage/>}/>
                 </Route>
             </Route>
           )

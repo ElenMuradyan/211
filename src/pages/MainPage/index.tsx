@@ -11,10 +11,13 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../typescript/interface/rootState";
 
 import './index.css';
+import { Link, useNavigate } from "react-router-dom";
+import { ROUTE_PATHS } from "../../util/constants/routhes";
 
 const { Title } = Typography;
 
 const Mainpage = () => {
+    const navigate = useNavigate();
     const [ showModal, setShowModal ] = useState<boolean>(false);
     const [ walletEvent, setWalletEvent ] = useState<walletEvent>('income');
     const { uid } = useSelector((store: RootState) => store.userProfile.userProfileInfo.userData);
@@ -37,15 +40,16 @@ const Mainpage = () => {
     return(
         <div className="main_container">
         <Flex className='mainContainer' justify="space-between" >
-            <MainPageComponents title="food"/>
-            <MainPageComponents title="home"/>
-            <MainPageComponents title="car"/>
-            <MainPageComponents title="leisure"/>
-            <MainPageComponents title="shopping"/>
+            <Link to={`${ROUTE_PATHS.CABINET}/food`}><MainPageComponents title="food"/></Link>
+            <Link to={`${ROUTE_PATHS.CABINET}/home`}><MainPageComponents title="home"/></Link>
+            <Link to={`${ROUTE_PATHS.CABINET}/car`}><MainPageComponents title="car"/></Link>
+            <Link to={`${ROUTE_PATHS.CABINET}/leisure`}><MainPageComponents title="leisure"/></Link>
+            <Link to={`${ROUTE_PATHS.CABINET}/shopping`}><MainPageComponents title="shopping"/></Link>
         </Flex>
         <Flex justify="space-between" className="buttons_container">
         <Button type="primary" onClick={() => handleOpenModal('expense')}>Add Expense</Button>
         <Button type="primary" onClick={() => handleOpenModal('income')}>Add Income</Button>
+        <Button type="primary" onClick={() => navigate(`${ROUTE_PATHS.CABINET}/allEvents`)}>See All The Changes</Button>
         </Flex>
         <AddWalletEventModal title={walletEvent} isOpen={showModal} onClose={handleCloseModal}/>
         </div>

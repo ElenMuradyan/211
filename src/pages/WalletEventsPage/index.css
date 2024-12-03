@@ -1,0 +1,10 @@
+.event_container{
+    border-radius: 12px;
+    box-shadow: rgba(0, 60, 255, 0.64) 0px 2px 4px 0px inset;
+    border-radius: 12px;
+    cursor: pointer;
+    padding: 20px;
+}
+.event_container:hover{
+    background-color: aliceblue;
+}
