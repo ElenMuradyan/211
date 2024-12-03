@@ -10,10 +10,10 @@ import Register from './pages/auth/Register';
 import CabinetLayout from './layouts/CabinetLayout';
 import { RootState } from './typescript/interface/rootState';
 import { AppDispatch } from './state-management/store';
-
-import './App.css';
 import Mainpage from './pages/MainPage';
 import WalletEventsPage from './pages/WalletEventsPage';
+
+import './App.css';
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,7 +21,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchUserProfileInfo());
-  },[fetchUserProfileInfo]);
+  },[dispatch]);
 
   return (
     <LoadingWrapper>

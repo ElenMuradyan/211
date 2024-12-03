@@ -61,9 +61,7 @@ const AddWalletEventModal = ({ title, isOpen, onClose }: addEventProps) => {
             form.resetFields();
             setButtonLoading(false);
             onClose();
-        }catch(e){
-            console.log(e);
-
+        }catch{
             setButtonLoading(false);
         }
     }
@@ -95,7 +93,13 @@ const AddWalletEventModal = ({ title, isOpen, onClose }: addEventProps) => {
                 name='amount'
                 rules={[{
                     required: true,
-                    message: 'Plaese Input The Amount'
+                    message: 'Plaese Input The Amount',
+                    validator: (_, value) => {
+                        if (!value || value <= 0) {
+                        return Promise.reject('Amount must be a positive number');
+                        }
+                        return Promise.resolve();
+                    },
                 }]}
                 >
                     <Input type='number' placeholder='Please Enter The Amount'/>
@@ -114,6 +118,10 @@ const AddWalletEventModal = ({ title, isOpen, onClose }: addEventProps) => {
                     title === 'expense' && <Form.Item
                     name='category'
                     label='Choose Field'
+                    rules={[{
+                        required: true,
+                        message: 'Plaese Select The Field'
+                    }]}
                     >
                         <Select
                         options={selectOptions}

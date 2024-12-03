@@ -3,4 +3,5 @@ export const ROUTE_PATHS = {
     LOGIN: '/login',
     REGISTER: '/register',
     CABINET:'/cabinet',
+    ALLEVENTS: '/cabinet/allEvents'
 }

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../typescript/interface/rootState";
 
 import './index.css';
+
 import { COLORS } from "../../../util/constants/styles";
 
 const { Title } = Typography;

@@ -8,3 +8,12 @@
 .event_container:hover{
     background-color: aliceblue;
 }
+@media (max-width: 500px) {
+    .event_container{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .information{
+        width: 100%;
+    }
+}

@@ -2,11 +2,11 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../state-management/store";
 import { Typography, Flex } from 'antd';
-
-import './index.css';
 import { COLORS } from "../../util/constants/styles";
 import { useEffect, useState } from "react";
 import { createWalletEventProps } from "../../typescript/types/createWalletEventProps";
+
+import './index.css';
 
 const { Title } = Typography;
 
@@ -22,11 +22,11 @@ const WalletEventsPage = () => {
         }else{
             setShownData(data.filter(data => data.category === title))
         }
-    }, []);
+    }, [data, title]);
 
     if(shownData.length === 0){
         return(
-            <Title>It seems like you haven't made any changes in your wallet</Title>
+            <Title level={3} style={{color: COLORS.blue}}>It seems like you haven't made any changes in your wallet</Title>
         )
     }
 
@@ -35,7 +35,7 @@ const WalletEventsPage = () => {
            {
             shownData.map(data => {
                 return(<Flex justify="space-between" align="flex-end" className="event_container">
-                    <div>
+                    <div className="information">
                     <Title level={4} style={{padding: 0, margin: 0, color: (data.type === 'expense') ? 'red' : COLORS.blue}}>Event Type: {data.type}</Title>
                     <Title level={4} style={{padding: 0, margin: 0}}>Category: {data.category}</Title>
                     <Title level={5} style={{padding: 0, margin: 0}}>Amount: {data.amount}$</Title>

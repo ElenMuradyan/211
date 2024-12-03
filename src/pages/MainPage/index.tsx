@@ -9,10 +9,10 @@ import { fetchWalletEvents } from "../../state-management/slices/walletEvents";
 import { AppDispatch } from "../../state-management/store";
 import { useSelector } from "react-redux";
 import { RootState } from "../../typescript/interface/rootState";
-
-import './index.css';
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "../../util/constants/routhes";
+
+import './index.css';
 
 const { Title } = Typography;
 
@@ -26,7 +26,7 @@ const Mainpage = () => {
 
     useEffect(() => {
         dispatch(fetchWalletEvents(uid));
-    },[]);
+    },[dispatch, uid]);
 
     const handleOpenModal = (title: walletEvent) => {
         setShowModal(true);
@@ -39,6 +39,7 @@ const Mainpage = () => {
 
     return(
         <div className="main_container">
+            <Title level={3} style={{color: COLORS.blue}}>Your Expenses</Title>
         <Flex className='mainContainer' justify="space-between" >
             <Link to={`${ROUTE_PATHS.CABINET}/food`}><MainPageComponents title="food"/></Link>
             <Link to={`${ROUTE_PATHS.CABINET}/home`}><MainPageComponents title="home"/></Link>
