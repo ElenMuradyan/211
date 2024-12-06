@@ -27,10 +27,14 @@ const Header = () => {
         dispatch(setCurrency(value));
         const fetchExchangeRate = async (fromCurrency: string, toCurrency: string): Promise<number> => {
             const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${fromCurrency}`);
-            const data = await response.json();            
-            return data.rates[toCurrency];
+            const data = await response.json();
+            if(toCurrency){
+                return data.rates[toCurrency?.toUpperCase()];
+            }else{
+                return 1;
+            }            
         };
-        const rate = await fetchExchangeRate(fromCurrency, value.toUpperCase());
+        const rate = await fetchExchangeRate(fromCurrency, value);
         setInfoToFirebase(rate, uid);
         setWalletEvents(rate, uid);
         dispatch(fetchUserProfileInfo());
