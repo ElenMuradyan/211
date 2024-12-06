@@ -4,5 +4,5 @@ export interface WalletEventsState {
     data: createWalletEventProps[]; 
     isLoading: boolean; 
     error: string | null; 
+    currency: string
 }
-

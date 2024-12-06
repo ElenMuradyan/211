@@ -8,7 +8,8 @@ import { WalletEventsState } from "../../typescript/interface/WalletEventState";
 const initialState: WalletEventsState = {
     data: [],
     isLoading: false,
-    error: null
+    error: null,
+    currency: 'usd'
 }
 
 export const fetchWalletEvents = createAsyncThunk(
@@ -28,7 +29,11 @@ export const fetchWalletEvents = createAsyncThunk(
 const walletEvents = createSlice({
     name: 'walletEvents',
     initialState,
-    reducers: {},
+    reducers: {
+        setCurrency: (state, action) => {
+            state.currency = action.payload;
+        }
+    },
     extraReducers: promise => {
         promise
         .addCase(fetchWalletEvents.pending, state => {
@@ -46,3 +51,4 @@ const walletEvents = createSlice({
 })
 
 export default walletEvents.reducer;
+export const { setCurrency } = walletEvents.actions;

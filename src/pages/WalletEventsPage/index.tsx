@@ -11,6 +11,7 @@ import './index.css';
 const { Title } = Typography;
 
 const WalletEventsPage = () => {
+    const { currency } = useSelector((store: RootState) => store.walletEvents);
     const { data } = useSelector((store: RootState) => store.walletEvents);
     const [ shownData, setShownData ] = useState<createWalletEventProps[]>([]);
 
@@ -38,7 +39,7 @@ const WalletEventsPage = () => {
                     <div className="information">
                     <Title level={4} style={{padding: 0, margin: 0, color: (data.type === 'expense') ? 'red' : COLORS.blue}}>Event Type: {data.type}</Title>
                     <Title level={4} style={{padding: 0, margin: 0}}>Category: {data.category}</Title>
-                    <Title level={5} style={{padding: 0, margin: 0}}>Amount: {data.amount}$</Title>
+                    <Title level={5} style={{padding: 0, margin: 0}}>Amount: {data.amount} {currency.toUpperCase()}</Title>
                     <Title level={5} style={{padding: 0, margin: 0}}>Description: {data.description}</Title>
                     </div>
                     <Title level={5} style={{padding: 0, margin: 0}}>Date: {data.date}</Title>

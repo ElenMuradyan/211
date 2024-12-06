@@ -14,6 +14,7 @@ const { Text, Title } = Typography;
 
 const DropDown = () => {
     const { firstName, lastName, email, userIncome } = useSelector((store: RootState) => store.userProfile.userProfileInfo.userData);
+    const { currency } = useSelector((store: RootState) => store.walletEvents);
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const { token } = useToken();
@@ -64,7 +65,7 @@ const DropDown = () => {
                     boxShadow: token.boxShadowSecondary,
                   }}>
                     <Flex vertical align="center" style={{padding:token.sizeMS}} className="profile_dropdown_container">
-                    <Title level={5} style={{padding: 0, margin: 0, color: token.blue}}>YOUR BALANCE: {userIncome}$</Title>
+                    <Title level={5} style={{padding: 0, margin: 0, color: token.blue}}>YOUR BALANCE: {userIncome} {currency.toUpperCase()}</Title>
                         <Text>{firstName} {lastName}</Text>
                         <Text type="secondary" underline>{email}</Text>
                     </Flex>

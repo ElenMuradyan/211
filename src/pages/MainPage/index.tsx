@@ -18,6 +18,7 @@ const { Title } = Typography;
 
 const Mainpage = () => {
     const navigate = useNavigate();
+    
     const [ showModal, setShowModal ] = useState<boolean>(false);
     const [ walletEvent, setWalletEvent ] = useState<walletEvent>('income');
     const { uid } = useSelector((store: RootState) => store.userProfile.userProfileInfo.userData);
