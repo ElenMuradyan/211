@@ -3,7 +3,7 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBDQztY0vVTqDGtQ7kqEEU09Dym75GO3Ds",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "spender-e2809.firebaseapp.com",
   projectId: "spender-e2809",
   storageBucket: "spender-e2809.firebasestorage.app",

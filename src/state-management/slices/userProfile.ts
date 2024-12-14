@@ -4,7 +4,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { auth, db } from "../../services/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { FIRESTORE_PATH_NAMES } from "../../util/constants/firestorePathNames";
-import { DocumentSnapshot } from "firebase/firestore";
 
 const initialState: userProfileInitialState = {
     loading: true,
@@ -28,18 +27,19 @@ const initialState: userProfileInitialState = {
     }
 }
 
-export const fetchUserProfileInfo = createAsyncThunk<DocumentSnapshot | null>(
+export const fetchUserProfileInfo = createAsyncThunk<userDataType | null>(
     'data/fetchUserProfileInfo',
     async () => {
-        return new Promise<DocumentSnapshot | null>((resolve, reject) => {
+        return new Promise<userDataType | null>((resolve, reject) => {
             onAuthStateChanged(auth, async user => {
                 if(user) {
                     const { uid } = user;
                     const userRef = doc(db, FIRESTORE_PATH_NAMES.REGISTER_USERS, uid);
                     getDoc(userRef)
                     .then(userData  => {
-                        if(userData.exists()){    
-                            resolve(userData);
+                        if(userData.exists()){  
+                            const data = userData.data() as userDataType;                            
+                            resolve(data);
                         }else{
                             resolve(null);
                         }
@@ -79,7 +79,7 @@ const userProfileSlice = createSlice({
         .addCase(fetchUserProfileInfo.fulfilled, (state, action) => {
             state.loading = false;
             if (action.payload) {
-                const userProfile = action.payload.data() as userDataType;
+                const userProfile = action.payload as userDataType;
                 state.userProfileInfo = {
                     isAuth: true,
                     userData: userProfile,
